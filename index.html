@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pankaj Kataria | Fitness Coach</title>
+    <meta name="description" content="Personal training, online coaching and diet plans. Message on WhatsApp to start." />
+    <meta name="theme-color" content="#09090b" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="preload" as="image" href="images/hero.webp" type="image/webp" fetchpriority="high" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pankaj Kataria | Fitness Coach" />
+    <meta property="og:description" content="Personal training, online coaching and diet plans. Message on WhatsApp to start." />
+    <meta property="og:image" content="images/og-cover.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,800&display=swap" rel="stylesheet" />
+    <style>
+:root {
+  --bg: #09090b;
+  --surface: #131316;
+  --surface-2: #1b1b20;
+  --line: rgba(255, 255, 255, 0.09);
+  --text: #f5f5f4;
+  --muted: #9a9aa3;
+  --a: #ff4d1f;
+  --on-accent: #0b0b0c;
+  --wa: #1da851; /* darker WhatsApp green so the white icon keeps 3:1 contrast */
+  --a2: #ffa31a;
+  --grad: linear-gradient(120deg, var(--a), var(--a2));
+  --r: 16px;
+  --pad: clamp(1.125rem, 5vw, 3.5rem);
+  --head: "Barlow Condensed", Impact, sans-serif;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1); /* smooth deceleration, no bounce */
+  --spring: cubic-bezier(0.32, 0.72, 0, 1); /* no overshoot: nothing here is thrown */
+  --tap: 2.75rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; scroll-padding-top: 80px; overflow-x: clip; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.6; font-optical-sizing: auto; overflow-x: hidden; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+p, li { text-wrap: pretty; }
+:focus-visible { outline: 2px solid var(--a2); outline-offset: 3px; border-radius: 6px; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+section { padding: clamp(4.5rem, 10vw, 8rem) var(--pad); max-width: 1240px; margin: 0 auto; }
+h1, h2, h3 { text-wrap: balance; font-family: var(--head); font-weight: 800; text-transform: uppercase; line-height: 1; letter-spacing: -0.01em; font-optical-sizing: auto; }
+h2 { letter-spacing: -0.015em; }
+h2 { font-size: clamp(2.8rem, 8vw, 5.2rem); font-style: italic; }
+h2 em, h1 em { font-style: italic; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kicker { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: .78rem; letter-spacing: .24em; text-transform: uppercase; color: var(--a2); margin-bottom: 16px; }
+.kicker::before { content: ""; width: 34px; height: 2px; background: var(--grad); }
+
+.ico { width: 1.1em; height: 1.1em; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ico-fill { fill: currentColor; stroke: none; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: var(--tap); padding: 0 28px; background: var(--grad); color: var(--on-accent); font-weight: 600; font-size: .95rem; border-radius: 999px; transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .25s, color .25s; cursor: pointer; border: 0; }
+.btn:active { transform: scale(.96); transition-duration: .1s; }
+@media (hover: hover) { .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px -12px rgba(255, 77, 31, .75); } .btn:active { transform: scale(.96); } }
+.btn-light, .btn-ink { background: rgba(255, 255, 255, .06); color: var(--text); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .16); }
+@media (hover: hover) { .btn-light:hover, .btn-ink:hover { background: rgba(255, 255, 255, .12); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); } }
+.btn-sm { padding: 0 20px; font-size: .88rem; }
+.cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 34px; }
+
+/* nav */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px var(--pad); }
+.nav::before { content: ""; position: absolute; inset: 0 0 -1.25rem; z-index: -1; -webkit-mask-image: linear-gradient(#000 65%, transparent); mask-image: linear-gradient(#000 65%, transparent); background: rgba(9, 9, 11, .72); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); opacity: 0; transition: opacity .4s var(--ease); }
+.nav.stuck::before { opacity: 1; }
+.scrim { position: fixed; inset: 0; z-index: 40; background: rgba(0, 0, 0, .5); opacity: 0; pointer-events: none; transition: opacity .4s var(--ease); }
+.scrim.on { opacity: 1; pointer-events: auto; }
+@media (min-width: 801px) { .scrim { display: none; } }
+.links a[aria-current] { color: var(--text); }
+@media (min-width: 801px) { .links a[aria-current]:not(.btn) { box-shadow: 0 2px 0 var(--a); padding-bottom: 4px; } }
+.brand { font-family: var(--head); font-weight: 800; font-size: 1.7rem; text-transform: uppercase; font-style: italic; letter-spacing: 0; }
+.brand b { font-weight: 800; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.links { display: flex; align-items: center; gap: 30px; }
+.links a:not(.btn) { display: inline-flex; align-items: center; min-height: var(--tap); font-size: .88rem; font-weight: 500; color: var(--muted); transition: color .25s var(--ease); }
+.links a:not(.btn):hover { color: var(--text); }
+.burger { display: none; width: var(--tap); height: var(--tap); border: 1px solid var(--line); border-radius: 10px; background: var(--surface); cursor: pointer; position: relative; }
+.burger span { position: absolute; left: 12px; right: 12px; height: 2px; background: var(--text); transition: transform .4s var(--ease), top .4s var(--ease); }
+.burger span:first-child { top: 16px; }
+.burger span:last-child { top: 25px; }
+.burger[aria-expanded="true"] span:first-child { top: 20px; transform: rotate(45deg); }
+.burger[aria-expanded="true"] span:last-child { top: 20px; transform: rotate(-45deg); }
+@media (max-width: 800px) {
+  .burger { display: block; }
+  .links { position: absolute; top: 100%; left: 12px; right: 12px; flex-direction: column; align-items: stretch; gap: 0; background: rgba(24, 24, 28, .86); -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(0); border: 1px solid var(--line); border-top-color: rgba(255, 255, 255, .22); border-radius: 22px; padding: 8px 20px 20px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7); opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.96); transform-origin: top right; transition: opacity .3s var(--ease), transform .45s var(--ease), backdrop-filter .45s var(--ease), -webkit-backdrop-filter .45s var(--ease), visibility 0s .45s; }
+  .links.open { opacity: 1; visibility: visible; transform: none; -webkit-backdrop-filter: saturate(180%) blur(28px); backdrop-filter: saturate(180%) blur(28px); transition-delay: 0s; }
+  .links a:not(.btn) { padding: 15px 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; color: var(--text); }
+  .links .btn { margin-top: 16px; }
+}
+
+/* hero */
+.hero { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; padding-top: 120px; min-height: 100svh; }
+.hero::before { content: ""; position: absolute; width: 620px; height: 620px; right: -160px; top: 8%; background: radial-gradient(circle, rgba(255, 77, 31, .28), transparent 65%); z-index: -1; filter: blur(20px); }
+.chip { display: inline-block; font-size: .78rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--a2); border: 1px solid rgba(255, 163, 26, .4); padding: 7px 16px; border-radius: 99px; margin-bottom: 24px; }
+.hero h1 { font-size: clamp(4rem, 13vw, 9.5rem); font-style: italic; letter-spacing: -.025em; line-height: .95; }
+.hero h1 em { display: inline-block; padding-right: .06em; }
+.tagline { font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 1.5; max-width: 30em; margin-top: 24px; color: var(--muted); }
+.stats { display: flex; flex-wrap: wrap; gap: clamp(22px, 4vw, 48px); margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); }
+.stats b { display: block; font-family: var(--head); font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1; }
+.stats span { font-size: .75rem; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
+.photo { position: relative; background: linear-gradient(135deg, var(--surface-2), var(--surface)); overflow: hidden; aspect-ratio: 4/5; border-radius: var(--r); border: 1px solid var(--line); }
+.photo::before { content: attr(data-label); position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; }
+.photo img { position: relative; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.hero-photo { overflow: visible; border: 0; background: none; border-radius: 0; }
+.hero-photo::before { display: none; }
+.hero-photo img { clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%); border-radius: 0; filter: contrast(1.05) saturate(1.05); }
+.hero-photo::after { content: ""; position: absolute; inset: 0; z-index: 0; background: var(--grad); clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%); transform: translate(14px, 14px); opacity: .9; }
+.sticker { position: absolute; z-index: 3; left: 0; bottom: 30px; background: var(--bg); border: 1px solid var(--line); border-left: 4px solid var(--a); padding: 12px 18px; font-family: var(--head); font-weight: 800; text-transform: uppercase; font-size: 1.1rem; line-height: 1.1; letter-spacing: .05em; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; padding-top: 100px; min-height: auto; } .hero-photo { max-width: 420px; margin: 10px 14px 14px 0; } }
+
+/* marquee */
+.marquee { background: var(--grad); color: var(--on-accent); overflow: hidden; white-space: nowrap; padding: 14px 0; transform: rotate(-1.4deg); margin: 30px -20px; }
+.marquee div { display: inline-block; animation: slide 30s linear infinite; font-family: var(--head); font-weight: 800; font-style: italic; font-size: 1.7rem; text-transform: uppercase; letter-spacing: .03em; }
+.marquee span { margin: 0 18px; }
+.marquee i { font-style: normal; opacity: .55; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* about */
+.about { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(30px, 6vw, 80px); align-items: center; }
+.about-photo { border-radius: var(--r); }
+.about-photo img { filter: grayscale(.2) contrast(1.05); }
+.about p { margin-top: 22px; color: var(--muted); font-size: 1.05rem; max-width: 560px; }
+.titles-head { margin-top: 32px; font-family: var(--head); font-size: 1rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.certs { margin-top: 14px; border-top: 1px solid var(--line); }
+.title { --tone: var(--a2); display: grid; grid-template-columns: 2.75rem 1fr auto; align-items: center; column-gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); transition: padding .4s var(--ease); }
+.title.gold { --tone: #f2c14e; }
+.title.bronze { --tone: #d98a4a; }
+.medal { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; color: var(--tone); background: color-mix(in srgb, var(--tone) 14%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 45%, transparent); }
+.medal .ico { width: 1.35rem; height: 1.35rem; stroke-width: 1.6; }
+.title-event { font-family: var(--head); font-size: 1.55rem; font-weight: 800; text-transform: uppercase; letter-spacing: .01em; line-height: 1.1; }
+.title-result { font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--tone); text-align: right; }
+@media (hover: hover) { .title:hover { padding-left: .5rem; } }
+@media (max-width: 520px) { .title { grid-template-columns: 2.75rem 1fr; row-gap: .1rem; } .title-result { grid-column: 2; text-align: left; } }
+@media (max-width: 860px) { .about { grid-template-columns: 1fr; } .about-photo { max-width: 420px; } }
+
+/* services */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 22px; margin-top: 46px; }
+.card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 34px 28px; display: flex; flex-direction: column; overflow: hidden; transition: transform .5s var(--ease), border-color .4s var(--ease); }
+.card::before { content: ""; position: absolute; left: 0; top: 0; height: 3px; width: 100%; background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
+.card::after { content: ""; position: absolute; inset: 0; background: radial-gradient(360px 200px at 100% 0, rgba(255, 77, 31, .14), transparent 70%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+@media (hover: hover) {
+  .card:hover { transform: translateY(-6px); border-color: rgba(255, 163, 26, .35); }
+  .card:hover::before { transform: scaleX(1); }
+  .card:hover::after { opacity: 1; }
+}
+.idx { font-family: var(--head); font-weight: 800; font-style: italic; font-size: 4rem; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px rgba(255, 255, 255, .18); }
+.card h3 { font-size: 2.2rem; margin: 10px 0 12px; }
+.card p { color: var(--muted); font-size: .95rem; }
+.card ul { list-style: none; margin: 20px 0 28px; flex: 1; }
+.card li { display: flex; gap: 10px; padding: 6px 0; font-size: .92rem; }
+.card li::before { content: "▸"; color: var(--a); }
+.card .btn { align-self: flex-start; position: relative; z-index: 1; }
+
+/* results */
+.hint { margin-top: 14px; color: var(--muted); }
+.tf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 40px; }
+.tf { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; transition: border-color .3s; }
+.tf:hover { border-color: rgba(255, 163, 26, .35); }
+.ba { cursor: ew-resize; touch-action: pan-y; position: relative; aspect-ratio: 4/5; background: linear-gradient(135deg, var(--surface-2), var(--surface)); user-select: none; }
+.ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ba .before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); filter: grayscale(1) brightness(.85); }
+.ph { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; }
+.tag { position: absolute; top: 14px; z-index: 3; padding: 5px 12px; border-radius: 4px; background: rgba(0, 0, 0, .7); backdrop-filter: blur(6px); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .16em; }
+.tag.b { left: 14px; } .tag.a { right: 14px; background: var(--grad); color: var(--on-accent); }
+.bar { position: absolute; top: 0; bottom: 0; left: 0; margin-left: -1px; width: 2px; background: #fff; will-change: transform; z-index: 2; pointer-events: none; box-shadow: 0 0 14px rgba(255, 255, 255, .5); }
+.bar::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42px; height: 42px; border-radius: 50%; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b0b0c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 7l-5 5 5 5M16 7l5 5-5 5M3 12h18'/%3E%3C/svg%3E") center/22px no-repeat, var(--grad); color: var(--on-accent);  }
+.ba:focus-visible { outline: 2px solid var(--a2); outline-offset: -2px; border-radius: 0; }
+.ba.dragging .bar::after { transform: translate(-50%, -50%) scale(1.12); }
+.bar::after { transition: transform .3s var(--spring); }
+.tf figcaption { padding: 16px 20px; display: flex; flex-direction: column; }
+.tf figcaption b { font-family: var(--head); font-size: 1.4rem; text-transform: uppercase; letter-spacing: .03em; }
+.tf figcaption span { color: var(--muted); font-size: .88rem; }
+
+/* contact */
+.contact { max-width: none; position: relative; text-align: center; overflow: hidden; background: var(--surface); border-block: 1px solid var(--line); }
+.contact::before { content: ""; position: absolute; left: 50%; bottom: -260px; width: 800px; height: 500px; transform: translateX(-50%); background: radial-gradient(ellipse, rgba(255, 77, 31, .35), transparent 65%); z-index: 0; }
+.contact > * { position: relative; z-index: 1; }
+.contact h2 { font-size: clamp(3.2rem, 12vw, 8.5rem); }
+.contact p { margin: 20px auto 0; max-width: 460px; color: var(--muted); font-size: 1.1rem; }
+.contact .cta { justify-content: center; }
+.contact .btn-ink { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .25); }
+
+footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 26px var(--pad); font-size: .82rem; color: var(--muted); }
+
+/* phone refinements */
+@media (max-width: 600px) {
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 36px; }
+  .stats span { display: block; font-size: .75rem; letter-spacing: .08em; line-height: 1.35; margin-top: 6px; }
+  .hero .cta .btn, .contact .cta .btn { flex: 1 1 100%; }
+  .cta { gap: 12px; }
+  footer { padding-bottom: 5.5rem; } /* keeps the floating WhatsApp button off the footer text */
+  section { padding-block: 4.5rem; }
+}
+
+.fab { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 60; width: 58px; height: 58px; border-radius: 50%; background: var(--wa); display: grid; place-items: center; box-shadow: 0 10px 28px -6px rgba(37, 211, 102, .6); transition: transform .35s var(--spring); }
+.fab:active { transform: scale(.92); }
+@media (hover: hover) { .fab:hover { transform: scale(1.08); } }
+.fab svg { width: 30px; height: 30px; fill: #fff; }
+
+/* reveal */
+.rv { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--ease), transform 1s var(--ease); transition-delay: var(--d, 0s); }
+.rv.in { opacity: 1; transform: none; }
+/* reduced motion: keep feedback, drop slides, springs and parallax; cross-fade instead */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rv { transform: none; transition: opacity .25s ease; transition-delay: 0s; }
+  .marquee div { animation: none; }
+  .card, .title, .btn, .fab { transition-property: opacity, background-color, box-shadow, color; }
+  .btn:hover, .btn:active, .card:hover, .title:hover, .fab:hover, .fab:active { transform: none; }
+  .links { transform: none !important; transition: opacity .2s ease, visibility 0s .2s; }
+  .links.open { transition-delay: 0s; }
+  .bar::after { transition: none; }
+}
+/* reduced transparency: frostier, near-solid surfaces */
+@media (prefers-reduced-transparency: reduce) {
+  .nav::before { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .links, .links.open { background: #1b1b20; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .tag { background: #000; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+/* increased contrast: defined borders, lighter secondary text */
+@media (prefers-contrast: more) {
+  :root { --line: rgba(255, 255, 255, .45); --muted: #d0d0d6; }
+  .links { background: #141416; border-color: #fff; }
+  .btn-light, .btn-ink { box-shadow: inset 0 0 0 2px #fff; }
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="scrim" id="scrim"></div>
+    <header class="nav" id="nav">
+      <a href="#top" class="brand" data-brand></a>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+      <nav class="links" id="links">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#results">Results</a>
+        <a href="#contact">Contact</a>
+        <a class="btn btn-sm" data-wa target="_blank" rel="noopener">WhatsApp</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-text">
+          <span class="chip" data-role></span>
+          <h1 data-name></h1>
+          <p class="tagline" data-tagline></p>
+          <div class="cta">
+            <a class="btn" data-wa target="_blank" rel="noopener">Chat on WhatsApp <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-light" href="#results">See results ↓</a>
+          </div>
+          <div class="stats" id="stats"></div>
+        </div>
+        <div class="hero-photo photo" data-label="Hero photo" id="heroPhoto">
+          <span class="sticker">Fitness<br />Coach</span>
+        </div>
+      </section>
+
+      <div class="marquee" aria-hidden="true"><div id="marquee"></div></div>
+
+      <section id="about" class="about">
+        <div class="photo about-photo" data-label="Trainer photo" id="aboutPhoto"></div>
+        <div>
+          <span class="kicker">About</span>
+          <h2>Built on discipline, <em>not shortcuts.</em></h2>
+          <p data-about></p>
+          <h3 class="titles-head">Titles &amp; achievements</h3>
+          <ul class="certs" id="certs"></ul>
+        </div>
+      </section>
+
+      <section id="services" class="services">
+        <span class="kicker">What I offer</span>
+        <h2>Pick your <em>plan.</em></h2>
+        <div class="cards" id="cards"></div>
+      </section>
+
+      <section id="results" class="results">
+        <span class="kicker">Real results</span>
+        <h2>Before <em>&amp;</em> after.</h2>
+        <p class="hint">Drag the slider to compare.</p>
+        <div class="tf-grid" id="tfGrid"></div>
+      </section>
+
+      <section id="contact" class="contact">
+        <h2>Ready to start?</h2>
+        <p>Send a message and I'll reply personally. No forms, no waiting.</p>
+        <div class="cta">
+          <a class="btn btn-ink" data-wa target="_blank" rel="noopener">WhatsApp me <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-light" data-ig target="_blank" rel="noopener">Instagram <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© <span id="yr"></span> <span data-brand-plain></span></span>
+      <span>Results vary. Consult a doctor before starting any program.</span>
+    </footer>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+      <symbol id="i-medal" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14.5 7.5 22 12 19.5l4.5 2.5L15 14.5"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+      <symbol id="i-diamond" viewBox="0 0 24 24"><path d="M12 2.5 15 12l-3 9.5L9 12z"/></symbol>
+    </svg>
+    <a class="fab" data-wa target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.25-1.38A9.9 9.9 0 1 0 12.04 2Zm5.8 14.07c-.25.7-1.45 1.34-2 1.4-.52.06-1.17.09-1.9-.12a17 17 0 0 1-1.72-.63c-3.03-1.31-5-4.37-5.16-4.57-.15-.2-1.23-1.64-1.23-3.12s.78-2.2 1.05-2.5c.28-.3.6-.38.8-.38h.58c.19 0 .43-.07.67.5.25.6.85 2.08.92 2.23.08.15.13.32.03.52-.1.2-.15.32-.3.5-.15.17-.32.38-.45.51-.15.15-.3.31-.13.6.18.3.78 1.28 1.67 2.07 1.14 1.02 2.1 1.33 2.4 1.48.3.15.47.13.65-.08.17-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.57.35.08.12.08.72-.17 1.42Z"/></svg>
+    </a>
+    <script>
+/* ============================================================
+   EDIT THIS BLOCK to personalise the whole site.
+   Photos live in the /images folder (see images/README.md).
+   ============================================================ */
+const CONFIG = {
+    name: "Pankaj Kataria",
+    tagline: "Train smart. Eat right. Change your body and your life.",
+    role: "Fitness Coach",
+    // Country code + number, no "+" or spaces (India = 91XXXXXXXXXX)
+    whatsapp: "918686800886",
+    whatsappMessage: "Hi! I saw your website and want to know more about training.",
+    instagram: "https://www.instagram.com/pankajkataria_fitnesscoach",
+    about: "I'm Pankaj, a fitness coach and competitive physique athlete. I help people lose fat, build strength and stay consistent with a plan made for them, honest guidance and real accountability.",
+    stats: [
+        { value: 5, suffix: "+", label: "Years experience" },
+        { value: 50, suffix: "+", label: "Clients coached" },
+        { value: 3, suffix: "", label: "Titles won" },
+    ],
+    // Competition titles. tone: "gold" | "bronze" sets the medal colour.
+    titles: [
+      { event: "Mr. Panchkula", result: "Gold Medal", tone: "gold" },
+      { event: "Mr. Ambala", result: "Men's Physique · Bronze", tone: "bronze" },
+      { event: "Mr. Punjab", result: "Bronze Medal", tone: "bronze" },
+    ],
+    services: [
+        {
+            title: "Personal Training",
+            text: "One-on-one sessions built around your body and goals.",
+            points: ["Custom workout program", "Form & technique coaching", "Progress tracking"],
+            message: "Hi! I'm interested in Personal Training.",
+        },
+        {
+            title: "Online Coaching",
+            text: "Train from anywhere with a plan, check-ins and support.",
+            points: ["Weekly program updates", "Video form checks", "Daily WhatsApp support"],
+            message: "Hi! I'm interested in Online Coaching.",
+        },
+        {
+            title: "Diet Plan",
+            text: "Simple nutrition that fits your taste, budget and routine.",
+            points: ["Personalised meal plan", "Calorie & macro targets", "Easy Indian food options"],
+            message: "Hi! I'm interested in a Diet Plan.",
+        },
+    ],
+    // Files live in the images/ folder
+    images: { hero: "images/hero.webp", about: "images/trainer.webp" },
+    transformations: [
+        { before: "images/transformations/t1-before.webp", after: "images/transformations/t1-after.webp", name: "Amit Verma", note: "12 weeks · -10 kg fat loss" },
+        { before: "images/transformations/t2-before.webp", after: "images/transformations/t2-after.webp", name: "Karan Malhotra", note: "16 weeks · Muscle gain" },
+        { before: "images/transformations/t3-before.webp", after: "images/transformations/t3-after.webp", name: "Gurpreet Singh", note: "10 weeks · Body recomposition" },
+    ],
+};
+
+/* ---------------- site logic (no need to edit) ---------------- */
+const C = CONFIG;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const waLink = (msg) => `https://wa.me/${C.whatsapp}?text=${encodeURIComponent(msg || C.whatsappMessage)}`;
+const [first = "", ...rest] = C.name.trim().split(/\s+/);
+const last = rest.join(" ");
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+/* ---------- content ---------- */
+document.title = `${C.name} | ${C.role}`;
+$$("[data-brand]").forEach((e) => (e.innerHTML = `${first}<b>${last ? " " + last : ""}</b>`));
+$$("[data-brand-plain]").forEach((e) => (e.textContent = C.name));
+$("[data-name]").innerHTML = `${first}${last ? `<br><em>${last}</em>` : ""}`;
+$("[data-role]").textContent = C.role;
+$("[data-tagline]").textContent = C.tagline;
+$("[data-about]").textContent = C.about;
+$$("[data-wa]").forEach((a) => (a.href = waLink()));
+$$("[data-ig]").forEach((a) => (a.href = C.instagram));
+$("#yr").textContent = String(new Date().getFullYear());
+const setPhoto = (el, src, alt = "") => {
+    const img = new Image();
+    img.alt = alt;
+    img.decoding = "async";
+    if (el.id === "heroPhoto") img.fetchPriority = "high";
+    img.onload = () => el.prepend(img);
+    img.src = src;
+};
+setPhoto($("#heroPhoto"), C.images.hero, `${C.name}, ${C.role}`);
+setPhoto($("#aboutPhoto"), C.images.about, `${C.name} during a training session`);
+$("#stats").innerHTML = C.stats
+    .map((s) => `<div><b data-count="${s.value}" data-suffix="${s.suffix}">${s.value}${s.suffix}</b><span>${s.label}</span></div>`)
+    .join("");
+const words = ["Strength", "Fat Loss", "Muscle", "Discipline", "Nutrition", "Consistency"];
+$("#marquee").innerHTML = Array(4).fill(words.map((w) => `<span>${w}</span><i><svg class="ico ico-fill" aria-hidden="true"><use href="#i-diamond"/></svg></i>`).join("")).join("");
+$("#certs").innerHTML = C.titles
+  .map(
+    (t) => `
+  <li class="title ${t.tone || ""}">
+    <span class="medal" aria-hidden="true"><svg class="ico"><use href="#i-medal"/></svg></span>
+    <span class="title-event">${t.event}</span>
+    <span class="title-result">${t.result}</span>
+  </li>`
+  )
+  .join("");
+const tones = ["tone-a", "tone-b", "tone-c"];
+$("#cards").innerHTML = C.services
+    .map((s, i) => `
+  <article class="card ${tones[i % 3]}">
+    <span class="idx">0${i + 1}</span>
+    <h3>${s.title}</h3>
+    <p>${s.text}</p>
+    <ul>${s.points.map((p) => `<li>${p}</li>`).join("")}</ul>
+    <a class="btn btn-ink btn-sm" href="${waLink(s.message)}" target="_blank" rel="noopener">Ask on WhatsApp <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+  </article>`)
+    .join("");
+$("#tfGrid").innerHTML = C.transformations
+    .map((t, i) => `
+  <figure class="tf">
+    <div class="ba" role="slider" tabindex="0" aria-label="Before and after comparison, ${t.name}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <span class="ph">Photo ${i + 1}</span>
+      <img class="after" src="${t.after}" alt="${t.name}, after" width="800" height="1000" loading="lazy" decoding="async" draggable="false" onerror="this.remove()">
+      <img class="before" src="${t.before}" alt="${t.name}, before" width="800" height="1000" loading="lazy" decoding="async" draggable="false" onerror="this.remove()">
+      <span class="tag b">Before</span><span class="tag a">After</span>
+      <div class="bar"></div>
+    </div>
+    <figcaption><b>${t.name}</b><span>${t.note}</span></figcaption>
+  </figure>`)
+    .join("");
+/* ---------- before/after slider ----------
+   Direct manipulation: the divider stays glued to the pointer (respecting where it was grabbed).
+   On release the pointer's velocity is handed to a critically damped spring, so there is no
+   seam between dragging and settling. Springs re-target from the live value, so a new touch
+   can interrupt one at any moment. */
+const SPRING_RESPONSE = 0.4; // seconds; damping ratio 1 = no overshoot
+const DECELERATION = 0.99;
+// where a flick would come to rest (Apple's exponential-decay projection), in the same units as v
+const project = (v) => ((v / 1000) * DECELERATION) / (1 - DECELERATION);
+function initCompare(ba) {
+    const bar = $(".bar", ba);
+    let pos = 50; // percent, the live on-screen value
+    let target = 50;
+    let vel = 0; // percent per second
+    let raf = 0;
+    let dragging = false;
+    let direct = false; // true when grabbed on the handle: track 1:1 with no lag
+    let grab = 0;
+    let history = [];
+    const render = () => {
+        ba.style.setProperty("--pos", pos + "%");
+        bar.style.transform = `translate3d(${(pos / 100) * ba.clientWidth}px,0,0)`;
+        ba.setAttribute("aria-valuenow", String(Math.round(pos)));
+    };
+    const settle = () => {
+        cancelAnimationFrame(raf);
+        if (reduceMotion.matches) {
+            pos = target;
+            vel = 0;
+            render();
+            return;
+        }
+        let last = performance.now();
+        const w = (2 * Math.PI) / SPRING_RESPONSE;
+        const tick = (now) => {
+            const dt = Math.min((now - last) / 1000, 1 / 30);
+            last = now;
+            vel += (w * w * (target - pos) - 2 * w * vel) * dt;
+            pos += vel * dt;
+            render();
+            if (Math.abs(target - pos) < 0.02 && Math.abs(vel) < 0.05) {
+                pos = target;
+                vel = 0;
+                render();
+                return;
+            }
+            raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+    };
+    const pct = (clientX) => {
+        const r = ba.getBoundingClientRect();
+        return ((clientX - r.left) / r.width) * 100;
+    };
+    const clamp = (v) => Math.max(0, Math.min(100, v));
+    ba.addEventListener("pointerdown", (e) => {
+        ba.setPointerCapture(e.pointerId);
+        cancelAnimationFrame(raf); // interrupt: continue from the live value, never the old target
+        dragging = true;
+        ba.classList.add("dragging");
+        history = [{ p: pct(e.clientX), t: e.timeStamp }];
+        const p = pct(e.clientX);
+        const nearHandle = Math.abs(p - pos) * (ba.clientWidth / 100) < 32;
+        direct = nearHandle;
+        grab = nearHandle ? p - pos : 0;
+        vel = 0;
+        target = clamp(p - grab);
+        if (direct) {
+            pos = target;
+            render();
+        }
+        else
+            settle(); // tapped elsewhere on the photo: glide there
+    });
+    ba.addEventListener("pointermove", (e) => {
+        if (!dragging)
+            return;
+        const p = pct(e.clientX);
+        history.push({ p, t: e.timeStamp });
+        history = history.filter((h) => e.timeStamp - h.t < 100);
+        target = clamp(p - grab);
+        if (direct) {
+            pos = target;
+            render();
+        }
+    });
+    const release = () => {
+        if (!dragging)
+            return;
+        dragging = false;
+        ba.classList.remove("dragging");
+        const a = history[0];
+        const b = history[history.length - 1];
+        vel = a && b && b.t > a.t ? ((b.p - a.p) / (b.t - a.t)) * 1000 : 0;
+        if (direct)
+            target = clamp(pos + project(vel)); // carry the flick forward
+        settle();
+    };
+    ba.addEventListener("pointerup", release);
+    ba.addEventListener("pointercancel", release);
+    ba.addEventListener("keydown", (e) => {
+        const step = e.shiftKey ? 20 : 5;
+        const moves = { ArrowLeft: target - step, ArrowRight: target + step, Home: 0, End: 100 };
+        if (!(e.key in moves))
+            return;
+        e.preventDefault();
+        target = clamp(moves[e.key]);
+        settle();
+    });
+    new ResizeObserver(render).observe(ba);
+    render();
+}
+$$(".ba").forEach(initCompare);
+/* ---------- nav ---------- */
+const nav = $("#nav");
+const burger = $("#burger");
+const links = $("#links");
+const scrim = $("#scrim");
+const setMenu = (open) => {
+    links.classList.toggle("open", open);
+    scrim.classList.toggle("on", open);
+    burger.setAttribute("aria-expanded", String(open));
+};
+burger.addEventListener("click", () => setMenu(!links.classList.contains("open")));
+const closeMenu = () => setMenu(false);
+// smooth scroll for every in-page link (nav, hero button, logo)
+document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a)
+        return;
+    const href = a.getAttribute("href");
+    const target = href === "#top" ? document.body : document.querySelector(href);
+    if (!target)
+        return;
+    e.preventDefault();
+    closeMenu();
+    const y = target === document.body ? 0 : target.getBoundingClientRect().top + scrollY - 90;
+    scrollTo({ top: y, behavior: reduceMotion.matches ? "auto" : "smooth" });
+});
+// menu: close on Escape or when tapping outside, like a native sheet
+addEventListener("keydown", (e) => e.key === "Escape" && closeMenu());
+document.addEventListener("click", (e) => {
+    if (!nav.contains(e.target))
+        closeMenu();
+});
+addEventListener("scroll", () => nav.classList.toggle("stuck", scrollY > 20), { passive: true });
+// wayfinding: always show which section you are in
+const spy = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting)
+        return;
+    $$(".links a[href^='#']").forEach((a) => {
+        if (a.getAttribute("href") === "#" + e.target.id)
+            a.setAttribute("aria-current", "true");
+        else
+            a.removeAttribute("aria-current");
+    });
+}), { rootMargin: "-45% 0px -50% 0px" });
+$$("main section[id]").forEach((s) => spy.observe(s));
+/* ---------- scroll reveal ---------- */
+const reveal = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add("in"), reveal.unobserve(e.target))), { threshold: 0.12 });
+$$(".hero-text > *, .hero-photo, .about > *, .services > *, .card, .results > *, .tf, .contact > *").forEach((el, i) => {
+    el.classList.add("rv");
+    el.style.setProperty("--d", (i % 4) * 0.08 + "s");
+    reveal.observe(el);
+});
+/* ---------- count-up (skipped when the user prefers reduced motion) ---------- */
+const counter = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting)
+        return;
+    const el = e.target;
+    counter.unobserve(el);
+    if (reduceMotion.matches)
+        return;
+    const end = Number(el.dataset.count);
+    const t0 = performance.now();
+    const tick = (t) => {
+        const p = Math.min((t - t0) / 1300, 1);
+        el.textContent = Math.round(end * (1 - (1 - p) ** 3)) + (el.dataset.suffix ?? "");
+        if (p < 1)
+            requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+}), { threshold: 0.6 });
+$$("[data-count]").forEach((el) => counter.observe(el));
+
+    </script>
+  </body>
+</html>
