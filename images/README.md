@@ -10,7 +10,7 @@ Replace the placeholder photos with the trainer's real ones, **keeping the same 
 | `transformations/t1-before.webp` / `t1-after.webp` | Transformation pair 1 | 800 x 1000 | 4:5, same framing for both |
 | `transformations/t2-*.webp`, `t3-*.webp` | More pairs | 800 x 1000 | 4:5 |
 | `og-cover.jpg` | Preview shown when the link is shared on WhatsApp / Instagram | 1200 x 630 | 1.91:1 |
-| `favicon.svg` | Browser tab icon | any | square |
+| `favicon-p.svg` | Browser tab icon | any | square |
 
 ## Rules for production
 - Format: **WebP**, quality about 70-75. Aim for under **100 KB** per photo (currently 22-83 KB).
