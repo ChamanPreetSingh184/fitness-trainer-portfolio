@@ -159,7 +159,9 @@ h2 em, h1 em { font-style: italic; background: var(--grad); -webkit-background-c
 
 /* results */
 .hint { margin-top: 14px; color: var(--muted); }
-.tf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 40px; }
+.tf-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 40px; }
+@media (min-width: 640px) { .tf-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .tf-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
 .tf { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; transition: border-color .3s; }
 .tf:hover { border-color: rgba(255, 163, 26, .35); }
 .ba { cursor: ew-resize; touch-action: pan-y; position: relative; aspect-ratio: 4/5; background: linear-gradient(135deg, var(--surface-2), var(--surface)); user-select: none; }
@@ -361,9 +363,10 @@ const CONFIG = {
     // Files live in the images/ folder
     images: { hero: "images/hero.webp", about: "images/trainer.webp" },
     transformations: [
-        { before: "images/transformations/t1-before.webp", after: "images/transformations/t1-after.webp", name: "Amit Verma", note: "12 weeks · -10 kg fat loss" },
-        { before: "images/transformations/t2-before.webp", after: "images/transformations/t2-after.webp", name: "Karan Malhotra", note: "16 weeks · Muscle gain" },
-        { before: "images/transformations/t3-before.webp", after: "images/transformations/t3-after.webp", name: "Gurpreet Singh", note: "10 weeks · Body recomposition" },
+        { before: "images/transformations/t1-before.webp", after: "images/transformations/t1-after.webp", name: "Chamanpreet Singh", note: "12 weeks · 94 kg → 78 kg (−16 kg)" },
+        { before: "images/transformations/t2-before.webp", after: "images/transformations/t2-after.webp", name: "Manpreet Singh", note: "12 weeks · 95 kg → 74 kg (−21 kg)" },
+        { before: "images/transformations/t3-before.webp", after: "images/transformations/t3-after.webp", name: "Mandeep Singh", note: "8 weeks · 76 kg → 68 kg (−8 kg)" },
+        { before: "images/transformations/t4-before.webp", after: "images/transformations/t4-after.webp", name: "Amrik Singh", note: "8 weeks · 85 kg → 75 kg (−10 kg)" },
     ],
 };
 
