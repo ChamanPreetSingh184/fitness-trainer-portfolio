@@ -98,10 +98,20 @@ ul { list-style: none; }
 .marquee { background: var(--bg); padding: 6rem 0 2.5rem; overflow: hidden; }
 @media (min-width: 640px) { .marquee { padding-top: 8rem; } }
 @media (min-width: 768px) { .marquee { padding-top: 10rem; } }
+.mwrap { overflow: visible; }
 .mrow { display: flex; gap: 0.75rem; width: max-content; will-change: transform; }
-.mrow + .mrow { margin-top: 0.75rem; }
+.mwrap + .mwrap { margin-top: 0.75rem; }
 .mtile { flex: none; width: clamp(200px, 26vw, 330px); aspect-ratio: 4 / 5; border-radius: 1rem; overflow: hidden; background: #16161a; }
 .mtile img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+/* phone: rows are swipeable lists. Scrolling the page also slides them (fast enough to show every photo),
+   and the moment someone touches a row it is theirs to swipe. */
+@media (max-width: 767px) {
+  .mwrap { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+  .mwrap::-webkit-scrollbar { display: none; }
+  .mrow { transform: none !important; will-change: auto; padding-inline: 1rem; } /* equal 16px edge space at both ends; on the row itself so iOS Safari keeps it too */
+  .mtile { width: min(62vw, 260px); }
+  .mtile.dup { display: none; }
+}
 
 /* ---------- about ---------- */
 .about { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 5rem 1.25rem; overflow: hidden; }
@@ -262,9 +272,9 @@ ul { list-style: none; }
       </section>
 
       <!-- MARQUEE -->
-      <section class="marquee" id="marquee" aria-hidden="true">
-        <div class="mrow" id="row1"></div>
-        <div class="mrow" id="row2"></div>
+      <section class="marquee" id="marquee" aria-label="Photo gallery">
+        <div class="mwrap" id="wrap1"><div class="mrow" id="row1"></div></div>
+        <div class="mwrap" id="wrap2"><div class="mrow" id="row2"></div></div>
       </section>
 
       <!-- ABOUT -->
@@ -420,7 +430,7 @@ const CONFIG = {
   // Scrolling gallery under the hero. Row 1 drifts one way, row 2 the other.
   // Row 1: Pankaj's own photos. Row 2: finished results (the "before" photos live in the Results section).
   gallery: {
-    row1: ["images/hero.webp", "images/gallery/g2.webp", "images/gallery/g3.webp", "images/gallery/g4.webp", "images/trainer.webp"],
+    row1: ["images/gallery/g2.webp", "images/gallery/g3.webp", "images/gallery/g4.webp", "images/hero.webp", "images/trainer.webp"],
     row2: ["images/transformations/t1-after.webp", "images/transformations/t2-after.webp", "images/transformations/t3-after.webp", "images/transformations/t4-after.webp"],
   },
 
@@ -467,10 +477,16 @@ $("#heroH1").innerHTML = `Hi, i&rsquo;m ${first.toLowerCase()}`;
 }
 
 // scrolling gallery (photos come from CONFIG.gallery)
-const tile = (src) => `<div class="mtile"><img src="${versioned(src)}" alt="" width="400" height="500" loading="lazy" decoding="async" draggable="false"></div>`;
-const tripled = (arr) => [0, 1, 2].map(() => arr.map(tile).join("")).join("");
-$("#row1").innerHTML = tripled(C.gallery.row1);
-$("#row2").innerHTML = tripled(C.gallery.row2);
+const tile = (src, copy) => `<div class="mtile${copy ? " dup" : ""}"><img src="${versioned(src)}" alt="" width="400" height="500" loading="lazy" decoding="async" draggable="false"></div>`;
+const tripled = (arr) => [0, 1, 2].map((c) => arr.map((src) => tile(src, c)).join("")).join("");
+// On phones row 2 is laid out in reverse and starts at its right-hand end, so the FIRST photo of
+// CONFIG.gallery.row2 is the one on screen when the gallery arrives, then the row slides the other way.
+const phoneMQ = matchMedia("(max-width: 767px)");
+function buildGallery() {
+  $("#row1").innerHTML = tripled(C.gallery.row1);
+  $("#row2").innerHTML = tripled(phoneMQ.matches ? [...C.gallery.row2].reverse() : C.gallery.row2);
+}
+buildGallery();
 
 // about
 {
@@ -658,6 +674,16 @@ $$("main section[id]").forEach((s) => spy.observe(s));
 
 /* ---------- scroll-driven effects: gallery, about text, stacking cards ---------- */
 const marquee = $("#marquee"), row1El = $("#row1"), row2El = $("#row2");
+const wrap1 = $("#wrap1"), wrap2 = $("#wrap2");
+const phone = phoneMQ;
+phone.addEventListener("change", () => { buildGallery(); userOwned.clear(); onScroll(); });
+// phone gallery: a row follows the page scroll until the user actually swipes it sideways.
+// (Resting a finger on it to scroll the page vertically must not count, so we watch for a
+// horizontal move we did not make ourselves.) Once the section leaves the screen it is released again.
+const userOwned = new Set();
+const lastSet = new Map();
+const driveRow = (w, left) => { if (userOwned.has(w)) return; left = Math.round(left); lastSet.set(w, left); w.scrollLeft = left; };
+[wrap1, wrap2].forEach((w) => w.addEventListener("scroll", () => { if (Math.abs(w.scrollLeft - (lastSet.get(w) ?? w.scrollLeft)) > 3) userOwned.add(w); }, { passive: true }));
 const aboutEl = $("#aboutText"), chars = $$(".ch", aboutEl);
 const stack = $("#stack"), pcards = $$(".pcard");
 const n = pcards.length;
@@ -670,10 +696,23 @@ function onScroll() {
 
   if (!reduceMotion.matches) {
     // gallery: row 1 drifts right, row 2 drifts left as you scroll past
-    const top = marquee.getBoundingClientRect().top + y;
-    const offset = (y - top + vh) * 0.3;
-    row1El.style.transform = `translate3d(calc(-33.333% + ${offset - 200}px), 0, 0)`;
-    row2El.style.transform = `translate3d(calc(-33.333% - ${offset - 200}px), 0, 0)`;
+    const mr = marquee.getBoundingClientRect();
+    if (phone.matches) {
+      // the whole row travels while the section is on screen, so every photo gets its moment
+      // hold both rows on their first photo until BOTH rows are fully on screen (plus a little scroll
+      // to read them), then travel the whole row while the section scrolls away
+      const rowsEnd = wrap2.getBoundingClientRect().bottom - mr.top; // bottom of row 2 inside the section
+      const startTop = vh - rowsEnd - 70;
+      const endTop = 0.4 * vh - mr.height; // rows finish while the section is still on screen
+      const gp = clamp01((startTop - mr.top) / (startTop - endTop));
+      if (mr.bottom <= 0 || mr.top >= vh) userOwned.clear(); // off screen: hand the rows back to the page
+      driveRow(wrap1, gp * (wrap1.scrollWidth - wrap1.clientWidth));
+      driveRow(wrap2, (1 - gp) * (wrap2.scrollWidth - wrap2.clientWidth));
+    } else {
+      const offset = (y - (mr.top + y) + vh) * 0.3;
+      row1El.style.transform = `translate3d(calc(-33.333% + ${offset - 200}px), 0, 0)`;
+      row2El.style.transform = `translate3d(calc(-33.333% - ${offset - 200}px), 0, 0)`;
+    }
 
     // about: each character fades from 20% to full opacity as the paragraph scrolls through
     const r = aboutEl.getBoundingClientRect();
